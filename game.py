@@ -21,7 +21,7 @@ st.set_page_config(
 )
 
 # --- ФІНАЛЬНИЙ БЛОК СТИЛІВ ---
-image_file = "static/background.png"  # Перевір, чи тут правильне розширення (.jpg або .png)
+image_file = "static/background.jpg"  # Перевір, чи тут правильне розширення (.jpg або .png)
 
 if os.path.exists(image_file):
     image_base64 = get_image_as_base64(image_file)
