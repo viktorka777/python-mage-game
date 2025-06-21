@@ -1,4 +1,4 @@
-# game.py (ВЕРСІЯ 3.1 - ВИПРАВЛЕНИЙ РІВЕНЬ 3)
+# game.py (ВЕРСІЯ 3.2 - СТАБІЛЬНА З ДИЗАЙНОМ)
 
 import streamlit as st
 import time
@@ -10,32 +10,52 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- СТИЛІЗАЦІЯ (CSS) ---
-st.markdown("""
+# --- ДОДАНО БЛОК ДЛЯ СТАБІЛЬНОГО ДИЗАЙНУ ---
+page_bg_style = """
 <style>
-    .stTextInput > div > div > input {
-        border: 2px solid #4B0082; /* Індиго */
-        border-radius: 5px;
-    }
-    .stTextArea > div > div > textarea {
-        border: 2px solid #4B0082;
-        border-radius: 5px;
-    }
-    .stButton > button {
-        background-color: #9370DB; /* Середній фіолетовий */
-        color: white;
-        border-radius: 10px;
-        border: 2px solid #4B0082;
-    }
-    .stButton > button:hover {
-        background-color: #4B0082;
-        border-color: #9370DB;
-    }
+.stApp {
+    background: linear-gradient(135deg, #1e133a 0%, #34236a 50%, #5a3d8a 100%);
+}
+
+/* Робимо основний текст білим, щоб він читався на темному фоні */
+.stApp .stMarkdown, .stApp .stHeader, .stApp .stTitle, .stApp label {
+    color: #FFFFFF !important;
+    text-shadow: 1px 1px 2px #000000;
+}
+
+/* Стилізуємо поля для вводу коду */
+.stTextArea > div > div > textarea {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    border: 2px solid #9370DB;
+    border-radius: 5px;
+}
+
+/* Стилізуємо поле для вводу імені */
+.stTextInput > div > div > input {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    border: 2px solid #9370DB;
+    border-radius: 5px;
+}
+
+/* Стилізуємо кнопки */
+.stButton > button {
+    background-color: #9370DB; /* Середній фіолетовий */
+    color: white;
+    border-radius: 10px;
+    border: 2px solid #4B0082;
+}
+.stButton > button:hover {
+    background-color: #4B0082;
+    border-color: #9370DB;
+}
 </style>
-""", unsafe_allow_html=True)
+"""
+st.markdown(page_bg_style, unsafe_allow_html=True)
 
 
-# --- ІНІЦІАЛІЗАЦІЯ СТАНУ ГРИ ---
+# --- ІНІЦІАЛІЗАЦІЯ СТАНУ ГРИ (без змін) ---
 if 'level' not in st.session_state:
     st.session_state.level = 0
 if 'score' not in st.session_state:
@@ -45,22 +65,18 @@ if 'player_name' not in st.session_state:
 if 'error_message' not in st.session_state:
     st.session_state.error_message = ""
 
-# --- ФУНКЦІЇ ДЛЯ РІВНІВ ---
+# --- ФУНКЦІЇ ДЛЯ РІВНІВ (вся логіка без змін) ---
 
 def display_level_0():
-    """Вступний екран гри"""
     st.title("🧙‍♂️ Vítej na Cestě Python Mága! 📜")
     st.image("static/wizard.png", width=200)
-    
     st.markdown("### Tvá zkouška začíná, mladý učedníku!")
     st.markdown(
         "Jsi v prastaré Akademii Kódu. Aby ses stal pravým Python Mágem, "
         "musíš projít pěti začarovanými komnatami. V každé z nich musíš seslat "
         "správné kouzlo (napsat správný kód), abys otevřel dveře dál."
     )
-    
     player_name = st.text_input("Jak ti máme říkat, budoucí mágu?", key="player_name_input")
-    
     if st.button("Začít dobrodružství!"):
         if player_name:
             st.session_state.player_name = player_name
@@ -70,7 +86,6 @@ def display_level_0():
             st.warning("Musíš zadat své jméno, aby kronikáři věděli, o kom psát!")
 
 def display_level_1():
-    """Рівень 1: Змінні та print()"""
     st.header("Úroveň 1: Komnata ozvěn 🗣️")
     st.markdown(
         "První komnata testuje tvou schopnost **představit se**. "
@@ -79,13 +94,10 @@ def display_level_1():
         "Poté ho vypiš pomocí funkce `print()`."
     )
     st.info("💡 **Tip:** Jména (řetězce) se v Pythonu píší do uvozovek, např. `\"Albus\"`.")
-
     user_code = st.text_area("Napiš své kouzlo zde:", height=100, key="level1_code")
-    
     if st.button("Seslat kouzlo ✨"):
         correct_part1 = f"jmeno=\"{st.session_state.player_name}\""
         correct_part2 = "print(jmeno)"
-        
         if correct_part1.replace(" ", "") in user_code.replace(" ", "") and \
            correct_part2.replace(" ", "") in user_code.replace(" ", ""):
             st.success(f"Výborně, {st.session_state.player_name}! Dveře se otevírají!")
@@ -98,7 +110,6 @@ def display_level_1():
             st.error("Strážce ti nerozumí. Zkontroluj, zda jsi správně vytvořil proměnnou `jmeno` a použil funkci `print()`.")
 
 def display_level_2():
-    """Рівень 2: Арифметика"""
     st.header("Úroveň 2: Síň číselných lektvarů 🧪")
     st.markdown(
         "K odemčení dalších dveří musíš namíchat **lektvar síly**. "
@@ -106,9 +117,7 @@ def display_level_2():
         "\n\nNapiš kód, který vypočítá výsledek a uloží ho do proměnné `vysledek`."
     )
     st.info("💡 **Tip:** Python používá `+`, `-`, `*` (násobení), `/` (dělení) a závorky `()` pro určení pořadí operací.")
-    
     user_code = st.text_area("Napiš své kouzlo zde:", height=100, key="level2_code")
-    
     if st.button("Namíchat lektvar 🧪"):
         if "vysledek" in user_code and "5" in user_code and "3" in user_code and "*" in user_code and "+" in user_code:
             try:
@@ -128,16 +137,13 @@ def display_level_2():
         else:
             st.error("Zdá se, že ti chybí nějaká ingredience nebo operace. Pečlivě si přečti recept!")
 
-# --- ПОЧАТОК ЗМІНЕНОЇ ЧАСТИНИ ---
 def display_level_3():
-    """Рівень 3: Умови if/else"""
     st.header("Úroveň 3: Knihovna rozhodnutí 📚")
     st.markdown(
         "Před tebou stojí mluvící socha. Říká: *'Vyslov jedno ze dvou magických slov: **světlo** nebo **tma**. Jen jedno tě pustí dál.'*"
         "\n\nTvým úkolem je napsat kód, který se **rozhodne**. Vytvoř proměnnou `volba` s hodnotou `'světlo'`. "
         "Poté napiš podmínku `if`, která zkontroluje, jestli se `volba` rovná `'světlo'`. Pokud ano, vypiš `'Dveře se otevírají'`, jinak ( `else` ) vypiš `'Socha mlčí'`."
     )
-    
     st.info("💡 **Tip:** Zde je příklad, jak funguje podmínka `if/else` pro kontrolu věku. Zkus použít stejnou logiku pro svou úlohu!")
     st.code(
         "vek = 20\n"
@@ -147,25 +153,17 @@ def display_level_3():
         "    print('Vstup odepřen')", 
         language='python'
     )
-    
     user_code = st.text_area("Napiš své rozhodovací kouzlo:", height=150, key="level3_code")
-    
     if st.button("Vyslovit slovo 🗣️"):
-        # Готуємо код до перевірки, видаляючи пробіли
         normalized_code = user_code.replace(" ", "")
-        
-        # Нова, гнучка перевірка, яка приймає одинарні та подвійні лапки
         has_variable_single = "volba='světlo'" in normalized_code
         has_variable_double = 'volba="světlo"' in normalized_code
         has_variable = has_variable_single or has_variable_double
-
         has_condition_single = "ifvolba=='světlo':" in normalized_code
         has_condition_double = 'ifvolba=="světlo":' in normalized_code
         has_condition = has_condition_single or has_condition_double
-
         has_else = "else:" in normalized_code
         has_print = "print(" in normalized_code
-        
         if has_variable and has_condition and has_else and has_print:
             st.success("Správná volba! Socha ustupuje a odhaluje tajný průchod.")
             st.balloons()
@@ -175,10 +173,8 @@ def display_level_3():
             st.rerun()
         else:
             st.error("Socha nereaguje. Ujisti se, že tvůj kód má správnou strukturu `if/else` a porovnává správnou hodnotu.")
-# --- КІНЕЦЬ ЗМІНЕНОЇ ЧАСТИНИ ---
             
 def display_level_4():
-    """Рівень 4: Цикли for"""
     st.header("Úroveň 4: Zahrada opakování 🌳")
     st.markdown(
         "K přípravě dalšího kouzla potřebuješ sesbírat tři ingredience ze Zahrady opakování: **'kořen mandragory'**, **'hadí kůže'** a **'dračí šupina'**. "
@@ -187,9 +183,7 @@ def display_level_4():
         "\n2. Použij cyklus `for`, který pro každou položku v seznamu vypíše: `Sbírám: [název ingredience]`."
     )
     st.info("💡 **Tip:** Cyklus `for` opakuje kód pro každý prvek v seznamu. Příklad: `for i in muj_seznam: ...`")
-    
     user_code = st.text_area("Napiš své sběrací kouzlo:", height=200, key="level4_code")
-    
     if st.button("Začít sbírat 🌿"):
         is_correct = "for" in user_code and \
                      "in ingredience" in user_code and \
@@ -197,7 +191,6 @@ def display_level_4():
                      "kořen mandragory" in user_code and \
                      "hadí kůže" in user_code and \
                      "dračí šupina" in user_code
-        
         if is_correct:
             st.success("Všechny ingredience jsou v tvém váčku! Cesta je volná.")
             st.balloons()
@@ -209,7 +202,6 @@ def display_level_4():
             st.error("Něco ti chybí. Použil jsi cyklus `for` a správně vytvořil seznam `ingredience`?")
             
 def display_level_5():
-    """Рівень 5: Функції"""
     st.header("Úroveň 5: Svatyně mistrů 🏛️")
     st.markdown(
         "Jsi u posledních dveří. Jsou zapečetěny mocnou magií. Aby sis je otevřel, musíš vytvořit své vlastní, znovupoužitelné kouzlo - **funkci**."
@@ -218,17 +210,13 @@ def display_level_5():
         "\n\nPoté svou funkci zavolej se správným heslem."
     )
     st.info("💡 **Tip:** Funkce se definuje pomocí `def nazev_funkce(argument):`. Hodnota se vrací pomocí `return`.")
-
     user_code = st.text_area("Napiš své mistrovské kouzlo:", height=250, key="level5_code")
-    
     if st.button("Vyslovit mistrovské zaklínadlo 🪄"):
         normalized_code = user_code.replace(" ", "")
-        
         is_defined = "defotevri_dvere(heslo):" in normalized_code
         has_return = "return" in normalized_code
         has_if = "ifheslo==" in normalized_code
         is_called = "otevri_dvere(" in user_code
-        
         if is_defined and has_return and has_if and is_called:
             st.success("Slyšíš skřípění kamene... Dveře se otevírají a za nimi vidíš sál plný světla. Dokázal jsi to!")
             st.balloons()
@@ -240,7 +228,6 @@ def display_level_5():
             st.error("Pečeť je příliš silná. Zkontroluj definici funkce (`def`), podmínku (`if`), použití `return` a její zavolání.")
 
 def display_final_screen():
-    """Фінальний екран"""
     st.title(f"🎉 Gratuluji, Mágule {st.session_state.player_name}! 🎉")
     st.balloons()
     st.markdown(f"## Dosáhl jsi celkového skóre: **{st.session_state.score} bodů!**")
@@ -249,13 +236,12 @@ def display_final_screen():
         "Tvá cesta teprve začíná, ale základy máš pevné jako skála. Pokračuj v učení a staň se nejmocnějším kodérem v zemi!"
     )
     st.image("static/wizard.png", width=300, caption="Mistr Mág Pythonu")
-    
     if st.button("Hrát znovu?"):
         st.session_state.level = 1
         st.session_state.score = 0
         st.rerun()
 
-# --- ГОЛОВНА ЛОГІКА ГРИ ---
+# --- ГОЛОВНА ЛОГІКА ГРИ (без змін) ---
 st.sidebar.title("🐍 Panel Mága")
 if st.session_state.player_name:
     st.sidebar.write(f"**Učedník:** {st.session_state.player_name}")
@@ -265,7 +251,7 @@ if st.session_state.player_name:
 else:
     st.sidebar.write("Čekám na nového učedníka...")
 
-# Роутер, який відображає правильний рівень в залежності від стану гри
+# Роутер
 if st.session_state.level == 0:
     display_level_0()
 elif st.session_state.level == 1:
