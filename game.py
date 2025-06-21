@@ -1,4 +1,4 @@
-# game.py (ВЕРСІЯ 14.0 - ФІНАЛЬНІ ЗАГОЛОВКИ)
+# game.py (ВЕРСІЯ 15.0 - ХІРУРГІЧНИЙ УДАР ПО СТИЛЯХ)
 
 import streamlit as st
 import time
@@ -13,7 +13,7 @@ st.set_page_config(
 # --- ФІНАЛЬНИЙ БЛОК СТИЛІВ З ГАРАНТОВАНОЮ ЧИТАБЕЛЬНІСТЮ ---
 
 # !!! ВАЖЛИВО: ПЕРЕВІР, ЩО ТУТ ТВОЄ ПРАВИЛЬНЕ ПРЯМЕ ПОСИЛАННЯ З GITHUB !!!
-image_url = "https://raw.githubusercontent.com/viktorka777/python-mage-game/refs/heads/main/static/background.png"
+image_url = "https://raw.githubusercontent.com/viktorika777/python-mage-game/main/static/background.png"
 
 page_bg_style = f"""
 <style>
@@ -26,8 +26,9 @@ page_bg_style = f"""
     background-attachment: fixed;
 }}
 
-/* --- "БРОНЕБІЙНЕ" ВИПРАВЛЕННЯ ДЛЯ ЗАГОЛОВКІВ --- */
-.stApp h1, .stApp h2 {{
+/* --- "ХІРУРГІЧНЕ" ВИПРАВЛЕННЯ ДЛЯ ЗАГОЛОВКІВ --- */
+/* Ми звертаємось до спеціального атрибуту, який Streamlit використовує для заголовків */
+[data-testid="stHeading"] {{
     color: #FFFACD !important; /* Світло-золотий, колір пергаменту */
     /* Створюємо чіткий чорний контур навколо літер для максимальної читабельності */
     text-shadow: 
@@ -115,7 +116,7 @@ if 'error_message' not in st.session_state:
 
 # --- ФУНКЦІЇ РІВНІВ (без змін, стабільна логіка) ---
 def display_level_0():
-    st.title("Vítej na Cestě Python Mága! 📜") # st.title -> h1
+    st.title("Vítej na Cestě Python Mága! 📜")
     st.image("static/wizard.png", width=200)
     st.markdown("### Tvá zkouška začíná, mladý učedníku!")
     st.markdown(
@@ -133,7 +134,7 @@ def display_level_0():
             st.warning("Musíš zadat své jméno, aby kronikáři věděli, o kom psát!")
 
 def display_level_1():
-    st.header("Úroveň 1: Komnata ozvěn 🗣️") # st.header -> h2
+    st.header("Úroveň 1: Komnata ozvěn 🗣️")
     st.markdown(
         "První komnata testuje tvou schopnost **představit se**. Strážce komnaty se tě ptá na tvé jméno. Vytvoř proměnnou `jmeno` a ulož do ní své jméno v uvozovkách. Poté ho vypiš pomocí funkce `print()`."
     )
