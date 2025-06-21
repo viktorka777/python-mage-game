@@ -1,4 +1,4 @@
-# game.py (ВЕРСІЯ 8.0 - СТАБІЛЬНІСТЬ ПОНАД УСЕ)
+# game.py (ВЕРСІЯ 9.0 - ФІНАЛЬНА ТА СТАБІЛЬНА)
 
 import streamlit as st
 import time
@@ -13,14 +13,49 @@ def initialize_state():
 if 'level' not in st.session_state:
     initialize_state()
 
-# --- НАЛАШТУВАННЯ СТОРІНКИ (БЕЗ ФОНУ) ---
+# --- НАЛАШТУВАННЯ СТОРІНКИ ---
 st.set_page_config(
     page_title="Cesta Python Mága",
     page_icon="🧙‍♂️",
     layout="wide"
 )
 
-# --- ФУНКЦІЇ РІВНІВ (без змін у логіці) ---
+# --- НОВИЙ ЕЛЕГАНТНИЙ І ЛЕГКИЙ ФОН ---
+page_bg_style = """
+<style>
+.stApp {
+    background: linear-gradient(135deg, #0d0d2b 0%, #2f2f5b 50%, #502e6c 100%);
+}
+
+.stApp .stMarkdown, .stApp .stHeader, .stApp .stTitle, .stApp label {
+    color: #FFFFFF !important;
+    text-shadow: 1px 1px 2px #000000;
+}
+
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    border: 2px solid #9370DB;
+    border-radius: 5px;
+}
+
+.stButton > button {
+    background-color: #9370DB;
+    color: white;
+    border-radius: 10px;
+    border: 2px solid #4B0082;
+}
+.stButton > button:hover {
+    background-color: #4B0082;
+    border-color: #9370DB;
+}
+</style>
+"""
+st.markdown(page_bg_style, unsafe_allow_html=True)
+
+
+# --- ФУНКЦІЇ РІВНІВ (без змін) ---
 
 def display_level_0():
     st.title("🧙‍♂️ Vítej na Cestě Python Mága! 📜")
@@ -129,7 +164,7 @@ def display_level_5():
         has_if = "ifheslo==" in normalized_code
         is_called = "otevri_dvere(" in normalized_code
         if is_defined and has_return and has_if and is_called:
-            st.success("Slyšíš skřípění kamene...")
+            st.success("Slyšíш skřípění kamene...")
             st.balloons()
             st.session_state.score += 50
             st.session_state.level = 6
