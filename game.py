@@ -1,20 +1,9 @@
-# game.py (ВЕРСІЯ 7.0 - ВИПРАВЛЕННЯ ІНТЕРФЕЙСУ)
+# game.py (ВЕРСІЯ 8.0 - СТАБІЛЬНІСТЬ ПОНАД УСЕ)
 
 import streamlit as st
 import time
-import base64
-import os
 
-# --- ФУНКЦІЇ-ПОМІЧНИКИ (без змін) ---
-def get_image_as_base64(file_path):
-    try:
-        with open(file_path, "rb") as f:
-            data = f.read()
-        return base64.b64encode(data).decode()
-    except FileNotFoundError:
-        return None
-
-# --- ФУНКЦІЯ ІНІЦІАЛІЗАЦІЇ/СКИДАННЯ СТАНУ (без змін) ---
+# --- ФУНКЦІЯ ІНІЦІАЛІЗАЦІЇ/СКИДАННЯ СТАНУ ---
 def initialize_state():
     st.session_state.level = 0
     st.session_state.score = 0
@@ -24,52 +13,14 @@ def initialize_state():
 if 'level' not in st.session_state:
     initialize_state()
 
-# --- НАЛАШТУВАННЯ СТОРІНКИ ТА ФОНУ ---
+# --- НАЛАШТУВАННЯ СТОРІНКИ (БЕЗ ФОНУ) ---
 st.set_page_config(
     page_title="Cesta Python Mága",
     page_icon="🧙‍♂️",
     layout="wide"
 )
 
-# --- ВИПРАВЛЕНО: ШЛЯХ ДО PNG ТА ЙОГО ТИП ---
-image_file = "static/background.png"  # Змінено на .png
-if os.path.exists(image_file):
-    image_base64 = get_image_as_base64(image_file)
-    page_bg_img = f"""
-    <style>
-    .stApp {{
-        background-image: url("data:image/png;base64,{image_base64}"); /* Змінено на image/png */
-        background-size: cover;
-    }}
-    .stApp .stMarkdown, .stApp .stHeader, .stApp .stTitle, .stApp label {{
-        color: #FFFFFF !important; /* Додано !important для надійності */
-        text-shadow: 1px 1px 3px #000000;
-    }}
-    .stTextInput, .stTextArea, .stButton {{
-        background-color: rgba(20, 20, 40, 0.7); border-radius: 10px; padding: 10px; border: none;
-    }}
-    
-    /* --- ВИПРАВЛЕНО: КОНТРАСТНИЙ ФОН ДЛЯ ПОЛІВ ВВОДУ --- */
-    .stTextInput > div > div > input,
-    .stTextArea > div > div > textarea {{
-        background-color: rgba(0, 0, 0, 0.3); /* Темний напівпрозорий фон */
-        color: #FFFFFF;
-        border: 2px solid #9370DB;
-        border-radius: 5px;
-    }}
-
-    .stButton > button {{
-        background-color: #9370DB; color: white; border-radius: 10px; border: 2px solid #4B0082; width: 100%;
-    }}
-    .stButton > button:hover {{
-        background-color: #4B0082; border-color: #9370DB;
-    }}
-    </style>
-    """
-    st.markdown(page_bg_img, unsafe_allow_html=True)
-
-# --- РЕШТА КОДУ ГРИ ЗАЛИШАЄТЬСЯ БЕЗ ЗМІН ---
-# ... (всі функції від display_level_0 до кінця файлу залишаються такими ж, як у версії 6.0) ...
+# --- ФУНКЦІЇ РІВНІВ (без змін у логіці) ---
 
 def display_level_0():
     st.title("🧙‍♂️ Vítej na Cestě Python Mága! 📜")
