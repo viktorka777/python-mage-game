@@ -38,7 +38,7 @@ st.set_page_config(
     layout="wide"
 )
 
-image_file = "static/background.jpg"
+image_file = "static/background.png"
 if os.path.exists(image_file):
     image_base64 = get_image_as_base64(image_file)
     page_bg_img = f"""
