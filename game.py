@@ -13,7 +13,7 @@ st.set_page_config(
 # --- ФІНАЛЬНИЙ БЛОК СТИЛІВ ДЛЯ ІДЕАЛЬНОЇ ЧИТАБЕЛЬНОСТІ ---
 
 # !!! ВАЖЛИВО: ПЕРЕВІР, ЩО ТУТ ТВОЄ ПРАВИЛЬНЕ ПРЯМЕ ПОСИЛАННЯ З GITHUB !!!
-image_url = "https://raw.githubusercontent.com/viktorika777/python-mage-game/main/static/background.png"
+image_url = "https://raw.githubusercontent.com/viktorka777/python-mage-game/refs/heads/main/static/background.png"
 
 page_bg_style = f"""
 <style>
