@@ -1,4 +1,4 @@
-# game.py (ФІНАЛЬНА ВЕРСІЯ 3.0)
+# game.py (ВЕРСІЯ 3.1 - ВИПРАВЛЕНИЙ РІВЕНЬ 3)
 
 import streamlit as st
 import time
@@ -128,6 +128,7 @@ def display_level_2():
         else:
             st.error("Zdá se, že ti chybí nějaká ingredience nebo operace. Pečlivě si přečti recept!")
 
+# --- ПОЧАТОК ЗМІНЕНОЇ ЧАСТИНИ ---
 def display_level_3():
     """Рівень 3: Умови if/else"""
     st.header("Úroveň 3: Knihovna rozhodnutí 📚")
@@ -150,12 +151,22 @@ def display_level_3():
     user_code = st.text_area("Napiš své rozhodovací kouzlo:", height=150, key="level3_code")
     
     if st.button("Vyslovit slovo 🗣️"):
+        # Готуємо код до перевірки, видаляючи пробіли
         normalized_code = user_code.replace(" ", "")
         
-        if "volba='světlo'" in normalized_code and \
-           "ifvolba=='světlo':" in normalized_code and \
-           "else:" in normalized_code and \
-           "print(" in normalized_code:
+        # Нова, гнучка перевірка, яка приймає одинарні та подвійні лапки
+        has_variable_single = "volba='světlo'" in normalized_code
+        has_variable_double = 'volba="světlo"' in normalized_code
+        has_variable = has_variable_single or has_variable_double
+
+        has_condition_single = "ifvolba=='světlo':" in normalized_code
+        has_condition_double = 'ifvolba=="světlo":' in normalized_code
+        has_condition = has_condition_single or has_condition_double
+
+        has_else = "else:" in normalized_code
+        has_print = "print(" in normalized_code
+        
+        if has_variable and has_condition and has_else and has_print:
             st.success("Správná volba! Socha ustupuje a odhaluje tajný průchod.")
             st.balloons()
             st.session_state.score += 30
@@ -164,6 +175,7 @@ def display_level_3():
             st.rerun()
         else:
             st.error("Socha nereaguje. Ujisti se, že tvůj kód má správnou strukturu `if/else` a porovnává správnou hodnotu.")
+# --- КІНЕЦЬ ЗМІНЕНОЇ ЧАСТИНИ ---
             
 def display_level_4():
     """Рівень 4: Цикли for"""
@@ -210,14 +222,12 @@ def display_level_5():
     user_code = st.text_area("Napiš své mistrovské kouzlo:", height=250, key="level5_code")
     
     if st.button("Vyslovit mistrovské zaklínadlo 🪄"):
-        # --- ВИПРАВЛЕНА ЧАСТИНА ---
-        # Тепер ми шукаємо шаблони без пробілів у коді, з якого теж видалені пробіли.
         normalized_code = user_code.replace(" ", "")
         
         is_defined = "defotevri_dvere(heslo):" in normalized_code
         has_return = "return" in normalized_code
         has_if = "ifheslo==" in normalized_code
-        is_called = "otevri_dvere(" in user_code # Тут пробіл не важливий, бо ми не видаляємо його з коду
+        is_called = "otevri_dvere(" in user_code
         
         if is_defined and has_return and has_if and is_called:
             st.success("Slyšíš skřípění kamene... Dveře se otevírají a za nimi vidíš sál plný světla. Dokázal jsi to!")
@@ -241,7 +251,6 @@ def display_final_screen():
     st.image("static/wizard.png", width=300, caption="Mistr Mág Pythonu")
     
     if st.button("Hrát znovu?"):
-        # Скидаємо стан гри, але зберігаємо ім'я гравця для зручності
         st.session_state.level = 1
         st.session_state.score = 0
         st.rerun()
