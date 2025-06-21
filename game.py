@@ -1,4 +1,4 @@
-# game.py (ВЕРСІЯ 10.0 - ФІНАЛЬНА З ПРОФЕСІЙНИМ ФОНОМ)
+# game.py (ВЕРСІЯ 11.0 - ФІНАЛЬНИЙ ДИЗАЙН)
 
 import streamlit as st
 import time
@@ -10,14 +10,14 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- НОВИЙ, НАДІЙНИЙ СПОСІБ ВСТАНОВЛЕННЯ ФОНУ ---
+# --- ФІНАЛЬНИЙ БЛОК СТИЛІВ ДЛЯ ІДЕАЛЬНОЇ ЧИТАБЕЛЬНОСТІ ---
 
-# !!! ВАЖЛИВО: ВСТАВ СЮДИ СВОЄ ПРЯМЕ ПОСИЛАННЯ З GITHUB !!!
-image_url = "https://raw.githubusercontent.com/viktorka777/python-mage-game/refs/heads/main/static/background.png" 
-# Переконайся, що посилання правильне!
+# !!! ВАЖЛИВО: ПЕРЕВІР, ЩО ТУТ ТВОЄ ПРАВИЛЬНЕ ПРЯМЕ ПОСИЛАННЯ З GITHUB !!!
+image_url = "https://raw.githubusercontent.com/viktorika777/python-mage-game/main/static/background.png"
 
 page_bg_style = f"""
 <style>
+/* --- ГОЛОВНИЙ ФОН --- */
 .stApp {{
     background-image: url("{image_url}");
     background-size: cover;
@@ -26,13 +26,13 @@ page_bg_style = f"""
     background-attachment: fixed;
 }}
 
-/* Робимо основний текст білим для читабельності */
+/* --- ОСНОВНИЙ ТЕКСТ (ЗАГОЛОВКИ, ПИТАННЯ) --- */
 .stApp .stMarkdown, .stApp .stHeader, .stApp .stTitle, .stApp label {{
     color: #FFFFFF !important;
     text-shadow: 1px 1px 3px #000000;
 }}
 
-/* Стилізуємо поля вводу */
+/* --- ПОЛЯ ДЛЯ ВВОДУ --- */
 .stTextInput > div > div > input,
 .stTextArea > div > div > textarea {{
     background-color: rgba(0, 0, 0, 0.4);
@@ -41,7 +41,7 @@ page_bg_style = f"""
     border-radius: 5px;
 }}
 
-/* Стилізуємо кнопки */
+/* --- КНОПКИ --- */
 .stButton > button {{
     background-color: #9370DB;
     color: white;
@@ -51,6 +51,31 @@ page_bg_style = f"""
 .stButton > button:hover {{
     background-color: #4B0082;
     border-color: #9370DB;
+}}
+
+/* --- ВИПРАВЛЕННЯ ДЛЯ ПІДКАЗОК (st.info, st.success, і т.д.) --- */
+[data-testid="stAlert"] {{
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.2); /* Робимо фон напівпрозорим */
+}}
+[data-testid="stAlert"] p {{ /* Текст всередині підказки */
+    color: white !important;
+    text-shadow: none; /* Тінь тут не потрібна */
+}}
+
+/* --- ВИПРАВЛЕННЯ ДЛЯ БЛОКІВ КОДУ --- */
+[data-testid="stCodeBlock"] {{
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 10px;
+}}
+
+/* --- ВИПРАВЛЕННЯ ДЛЯ БІЧНОЇ ПАНЕЛІ --- */
+[data-testid="stSidebar"] {{
+    background-color: rgba(0, 0, 0, 0.5);
+}}
+[data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] .stTitle {{
+     color: #FFFFFF !important;
 }}
 </style>
 """
