@@ -1,4 +1,4 @@
-# game.py (ВЕРСІЯ 13.0 - ЯДЕРНИЙ ВАРІАНТ СТИЛІВ)
+# game.py (ВЕРСІЯ 14.0 - ФІНАЛЬНІ ЗАГОЛОВКИ)
 
 import streamlit as st
 import time
@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- ФІНАЛЬНИЙ БЛОК СТИЛІВ ДЛЯ ІДЕАЛЬНОЇ ЧИТАБЕЛЬНОСТІ ---
+# --- ФІНАЛЬНИЙ БЛОК СТИЛІВ З ГАРАНТОВАНОЮ ЧИТАБЕЛЬНІСТЮ ---
 
 # !!! ВАЖЛИВО: ПЕРЕВІР, ЩО ТУТ ТВОЄ ПРАВИЛЬНЕ ПРЯМЕ ПОСИЛАННЯ З GITHUB !!!
 image_url = "https://raw.githubusercontent.com/viktorka777/python-mage-game/refs/heads/main/static/background.png"
@@ -26,8 +26,20 @@ page_bg_style = f"""
     background-attachment: fixed;
 }}
 
-/* --- ОСНОВНИЙ ТЕКСТ (ЗАГОЛОВКИ, ПИТАННЯ) --- */
-.stApp .stMarkdown, .stApp .stHeader, .stApp .stTitle, .stApp label {{
+/* --- "БРОНЕБІЙНЕ" ВИПРАВЛЕННЯ ДЛЯ ЗАГОЛОВКІВ --- */
+.stApp h1, .stApp h2 {{
+    color: #FFFACD !important; /* Світло-золотий, колір пергаменту */
+    /* Створюємо чіткий чорний контур навколо літер для максимальної читабельності */
+    text-shadow: 
+        -1.5px -1.5px 0 #000,  
+         1.5px -1.5px 0 #000,
+        -1.5px  1.5px 0 #000,
+         1.5px  1.5px 0 #000,
+         -2px -2px 5px rgba(0,0,0,0.7); /* Додаткова м'яка тінь для об'єму */
+}}
+
+/* --- ЗВИЧАЙНИЙ ТЕКСТ (ПИТАННЯ, ОПИС) --- */
+.stApp .stMarkdown p, .stApp label {{
     color: #FFFFFF !important;
     text-shadow: 1px 1px 3px #000000;
 }}
@@ -59,7 +71,7 @@ page_bg_style = f"""
     border: 1px solid rgba(255, 255, 255, 0.3);
     background-color: rgba(0, 0, 0, 0.2);
 }}
-[data-testid="stAlert"] p {{
+[data-testid="stAlert"] p, [data-testid="stAlert"] li {{
     color: white !important;
     text-shadow: none;
 }}
@@ -78,13 +90,13 @@ page_bg_style = f"""
      color: #FFFFFF !important;
 }}
 
-/* --- "ЯДЕРНЕ" ВИПРАВЛЕННЯ: Маленькі вбудовані блоки коду в тексті --- */
-.stApp .stMarkdown code {{
-    background: rgba(0, 0, 0, 0.5) !important; /* Темний напівпрозорий фон */
-    color: #FFFFFF !important; /* Яскравий білий текст */
-    padding: 0.2em 0.4em !important; /* Трохи відступів */
-    border-radius: 5px !important; /* Округлені кути */
-    border: 1px solid rgba(255, 255, 255, 0.3) !important; /* Легка рамка для виділення */
+/* --- Маленькі вбудовані блоки коду в тексті --- */
+.stMarkdown code {{
+    background: rgba(0, 0, 0, 0.5) !important;
+    color: #FFFFFF !important;
+    padding: 0.2em 0.4em !important;
+    border-radius: 5px !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }}
 </style>
 """
@@ -103,7 +115,7 @@ if 'error_message' not in st.session_state:
 
 # --- ФУНКЦІЇ РІВНІВ (без змін, стабільна логіка) ---
 def display_level_0():
-    st.title("🧙‍♂️ Vítej na Cestě Python Mága! 📜")
+    st.title("Vítej na Cestě Python Mága! 📜") # st.title -> h1
     st.image("static/wizard.png", width=200)
     st.markdown("### Tvá zkouška začíná, mladý učedníku!")
     st.markdown(
@@ -121,7 +133,7 @@ def display_level_0():
             st.warning("Musíš zadat své jméno, aby kronikáři věděli, o kom psát!")
 
 def display_level_1():
-    st.header("Úroveň 1: Komnata ozvěn 🗣️")
+    st.header("Úroveň 1: Komnata ozvěn 🗣️") # st.header -> h2
     st.markdown(
         "První komnata testuje tvou schopnost **představit se**. Strážce komnaty se tě ptá na tvé jméno. Vytvoř proměnnou `jmeno` a ulož do ní své jméno v uvozovkách. Poté ho vypiš pomocí funkce `print()`."
     )
