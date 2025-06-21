@@ -1,4 +1,4 @@
-# game.py (ВЕРСІЯ 12.0 - ФІНАЛЬНА ЧИТАБЕЛЬНІСТЬ)
+# game.py (ВЕРСІЯ 13.0 - ЯДЕРНИЙ ВАРІАНТ СТИЛІВ)
 
 import streamlit as st
 import time
@@ -78,12 +78,13 @@ page_bg_style = f"""
      color: #FFFFFF !important;
 }}
 
-/* --- НОВЕ ВИПРАВЛЕННЯ: Маленькі вбудовані блоки коду в тексті --- */
-.stMarkdown code {{
-    background-color: rgba(255, 255, 255, 0.2) !important; /* Світлий напівпрозорий фон */
-    color: #f0f2f6 !important; /* Яскравий світло-сірий текст */
-    padding: 0.1em 0.3em;
-    border-radius: 5px;
+/* --- "ЯДЕРНЕ" ВИПРАВЛЕННЯ: Маленькі вбудовані блоки коду в тексті --- */
+.stApp .stMarkdown code {{
+    background: rgba(0, 0, 0, 0.5) !important; /* Темний напівпрозорий фон */
+    color: #FFFFFF !important; /* Яскравий білий текст */
+    padding: 0.2em 0.4em !important; /* Трохи відступів */
+    border-radius: 5px !important; /* Округлені кути */
+    border: 1px solid rgba(255, 255, 255, 0.3) !important; /* Легка рамка для виділення */
 }}
 </style>
 """
