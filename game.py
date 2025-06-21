@@ -1,4 +1,4 @@
-# game.py (ВЕРСІЯ 11.0 - ФІНАЛЬНИЙ ДИЗАЙН)
+# game.py (ВЕРСІЯ 12.0 - ФІНАЛЬНА ЧИТАБЕЛЬНІСТЬ)
 
 import streamlit as st
 import time
@@ -53,29 +53,37 @@ page_bg_style = f"""
     border-color: #9370DB;
 }}
 
-/* --- ВИПРАВЛЕННЯ ДЛЯ ПІДКАЗОК (st.info, st.success, і т.д.) --- */
+/* --- ПІДКАЗКИ (st.info, st.success, і т.д.) --- */
 [data-testid="stAlert"] {{
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    background-color: rgba(0, 0, 0, 0.2); /* Робимо фон напівпрозорим */
+    background-color: rgba(0, 0, 0, 0.2);
 }}
-[data-testid="stAlert"] p {{ /* Текст всередині підказки */
+[data-testid="stAlert"] p {{
     color: white !important;
-    text-shadow: none; /* Тінь тут не потрібна */
+    text-shadow: none;
 }}
 
-/* --- ВИПРАВЛЕННЯ ДЛЯ БЛОКІВ КОДУ --- */
+/* --- ВЕЛИКІ БЛОКИ КОДУ --- */
 [data-testid="stCodeBlock"] {{
     background-color: rgba(0, 0, 0, 0.5) !important;
     border-radius: 10px;
 }}
 
-/* --- ВИПРАВЛЕННЯ ДЛЯ БІЧНОЇ ПАНЕЛІ --- */
+/* --- БІЧНА ПАНЕЛЬ --- */
 [data-testid="stSidebar"] {{
     background-color: rgba(0, 0, 0, 0.5);
 }}
 [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] .stTitle {{
      color: #FFFFFF !important;
+}}
+
+/* --- НОВЕ ВИПРАВЛЕННЯ: Маленькі вбудовані блоки коду в тексті --- */
+.stMarkdown code {{
+    background-color: rgba(255, 255, 255, 0.2) !important; /* Світлий напівпрозорий фон */
+    color: #f0f2f6 !important; /* Яскравий світло-сірий текст */
+    padding: 0.1em 0.3em;
+    border-radius: 5px;
 }}
 </style>
 """
@@ -114,10 +122,7 @@ def display_level_0():
 def display_level_1():
     st.header("Úroveň 1: Komnata ozvěn 🗣️")
     st.markdown(
-        "První komnata testuje tvou schopnost **představit se**. "
-        "Strážce komnaty se tě ptá na tvé jméno. "
-        "Vytvoř proměnnou `jmeno` a ulož do ní své jméno v uvozovkách. "
-        "Poté ho vypiš pomocí funkce `print()`."
+        "První komnata testuje tvou schopnost **představit se**. Strážce komnaty se tě ptá na tvé jméno. Vytvoř proměnnou `jmeno` a ulož do ní své jméno v uvozovkách. Poté ho vypiš pomocí funkce `print()`."
     )
     st.info("💡 **Tip:** Jména (řetězce) se v Pythonu píší do uvozovek, např. `\"Albus\"`.")
     user_code = st.text_area("Napiš své kouzlo zde:", height=100, key="level1_code")
