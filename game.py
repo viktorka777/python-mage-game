@@ -1,17 +1,17 @@
-# game.py (ВЕРСІЯ 9.0 - ФІНАЛЬНА ТА СТАБІЛЬНА)
+# game.py (ВЕРСІЯ 5.0 - ФІНАЛЬНИЙ ІНТЕРФЕЙС)
 
 import streamlit as st
 import time
+import base64
+import os
 
-# --- ФУНКЦІЯ ІНІЦІАЛІЗАЦІЇ/СКИДАННЯ СТАНУ ---
-def initialize_state():
-    st.session_state.level = 0
-    st.session_state.score = 0
-    if 'player_name' not in st.session_state:
-        st.session_state.player_name = ""
-
-if 'level' not in st.session_state:
-    initialize_state()
+def get_image_as_base64(file_path):
+    try:
+        with open(file_path, "rb") as f:
+            data = f.read()
+        return base64.b64encode(data).decode()
+    except FileNotFoundError:
+        return None
 
 # --- НАЛАШТУВАННЯ СТОРІНКИ ---
 st.set_page_config(
@@ -20,53 +20,91 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- НОВИЙ ЕЛЕГАНТНИЙ І ЛЕГКИЙ ФОН ---
-page_bg_style = """
-<style>
-.stApp {
-    background: linear-gradient(135deg, #0d0d2b 0%, #2f2f5b 50%, #502e6c 100%);
-}
+# --- ФІНАЛЬНИЙ БЛОК СТИЛІВ ---
+image_file = "static/background.png"  # Перевір, чи тут правильне розширення (.jpg або .png)
 
-.stApp .stMarkdown, .stApp .stHeader, .stApp .stTitle, .stApp label {
-    color: #FFFFFF !important;
-    text-shadow: 1px 1px 2px #000000;
-}
+if os.path.exists(image_file):
+    image_base64 = get_image_as_base64(image_file)
+    
+    # Використовуємо більш надійний селектор `.stApp`
+    page_bg_img = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/jpg;base64,{image_base64}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
 
-.stTextInput > div > div > input,
-.stTextArea > div > div > textarea {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #FFFFFF;
-    border: 2px solid #9370DB;
-    border-radius: 5px;
-}
+    /* Робимо текст білим та додаємо тінь для кращої читабельності */
+    .stApp .stMarkdown, 
+    .stApp .stHeader, 
+    .stApp .stTitle,
+    .stApp .st-emotion-cache-1gulkj5 {{ /* Це для тексту в полях вводу */
+        color: #FFFFFF;
+        text-shadow: 1px 1px 3px #000000;
+    }}
 
-.stButton > button {
-    background-color: #9370DB;
-    color: white;
-    border-radius: 10px;
-    border: 2px solid #4B0082;
-}
-.stButton > button:hover {
-    background-color: #4B0082;
-    border-color: #9370DB;
-}
-</style>
-"""
-st.markdown(page_bg_style, unsafe_allow_html=True)
+    /* Напівпрозорий фон для інтерактивних елементів */
+    .stTextInput, .stTextArea, .stButton {{
+        background-color: rgba(20, 20, 40, 0.7);
+        border-radius: 10px;
+        padding: 10px;
+        border: none;
+    }}
+
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea {{
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #FFFFFF;
+        border: 2px solid #9370DB;
+        border-radius: 5px;
+    }}
+
+    .stButton > button {{
+        background-color: #9370DB;
+        color: white;
+        border-radius: 10px;
+        border: 2px solid #4B0082;
+        width: 100%; /* Розтягуємо кнопку на всю ширину контейнера */
+    }}
+    .stButton > button:hover {{
+        background-color: #4B0082;
+        border-color: #9370DB;
+    }}
+    
+    /* Прибираємо діагностичне повідомлення після того, як переконалися, що все працює */
+    /* Якщо фон знову не з'явиться, закоментуй цей блок, щоб побачити помилку */
+    [data-testid="stSidebar"] [data-testid="stAlert"] {{
+        display: none;
+    }}
+    </style>
+    """
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+else:
+    # Повідомлення про помилку залишається на випадок, якщо файл зникне
+    st.sidebar.error(f"❌ ПОМИЛКА: Файл фону не знайдено за шляхом '{image_file}'.")
 
 
-# --- ФУНКЦІЇ РІВНІВ (без змін) ---
+# --- РЕШТА КОДУ ГРИ ЗАЛИШАЄТЬСЯ БЕЗ ЗМІН ---
 
+# --- ІНІЦІАЛІЗАЦІЯ СТАНУ ГРИ ---
+if 'level' not in st.session_state:
+    st.session_state.level = 0
+if 'score' not in st.session_state:
+    st.session_state.score = 0
+if 'player_name' not in st.session_state:
+    st.session_state.player_name = ""
+
+
+# --- ФУНКЦІЇ ДЛЯ РІВНІВ ---
 def display_level_0():
     st.title("🧙‍♂️ Vítej na Cestě Python Mága! 📜")
     st.image("static/wizard.png", width=200)
     st.markdown("### Tvá zkouška začíná, mladý učedníku!")
     st.markdown("Jsi v prastaré Akademii Kódu...")
-    player_name = st.text_input(
-        "Jak ti máme říkat, budoucí mágu?",
-        value=st.session_state.player_name,
-        key="player_name_input"
-    )
+    player_name = st.text_input("Jak ti máme říkat, budoucí mágu?", key="player_name_input", value=st.session_state.get("player_name", ""))
     if st.button("Začít dobrodružství!"):
         if player_name:
             st.session_state.player_name = player_name
@@ -164,7 +202,7 @@ def display_level_5():
         has_if = "ifheslo==" in normalized_code
         is_called = "otevri_dvere(" in normalized_code
         if is_defined and has_return and has_if and is_called:
-            st.success("Slyšíш skřípění kamene...")
+            st.success("Slyšíš skřípění kamene...")
             st.balloons()
             st.session_state.score += 50
             st.session_state.level = 6
@@ -180,24 +218,26 @@ def display_final_screen():
     st.markdown("Prošel jsi všemi zkouškami...")
     st.image("static/wizard.png", width=300, caption="Mistr Mág Pythonu")
     if st.button("Hrát znovu?"):
+        # Скидаємо лише рівень і рахунок, ім'я залишаємо
+        current_name = st.session_state.player_name
+        st.session_state.clear() # Повне очищення
+        st.session_state.player_name = current_name # Відновлюємо ім'я
         st.session_state.level = 0
         st.session_state.score = 0
         st.rerun()
+
 
 # --- ГОЛОВНА ЛОГІКА ГРИ ---
 st.sidebar.title("🐍 Panel Mága")
 if st.session_state.player_name:
     st.sidebar.write(f"**Učedník:** {st.session_state.player_name}")
-    level_to_show = st.session_state.level
-    if st.session_state.level == 0: level_to_show = 1
-    if st.session_state.level > 5: level_to_show = 5
-    st.sidebar.write(f"**Úroveň:** {level_to_show} / 5")
+    st.sidebar.write(f"**Úroveň:** {st.session_state.level if st.session_state.level <= 5 else 5} / 5")
     st.sidebar.write(f"**Skóre:** {st.session_state.score} bodů")
     st.sidebar.progress(st.session_state.level / 5 if st.session_state.level <= 5 else 1.0)
 else:
     st.sidebar.write("Čekám na nového učedníka...")
 
-# Роутер
+# Роутер, який відображає правильний рівень в залежності від стану гри
 if st.session_state.level == 0:
     display_level_0()
 elif st.session_state.level == 1:
